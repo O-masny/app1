@@ -12,6 +12,6 @@ class HomepageCore extends StatefulWidget {
 class _HomepageCoreState extends State<HomepageCore> {
   @override
   Widget build(BuildContext context) {
-    return const CorePage(PageType.homepage);
+    return  CorePage(PageType.homepage);
   }
 }

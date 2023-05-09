@@ -16,9 +16,9 @@ class MainNavigationState extends State {
   int _selectedTab = 0;
 
   final List pages = [
-    const CorePage(PageType.homepage),
-    const CorePage(PageType.launches),
-    const CorePage(PageType.about),
+     CorePage(PageType.homepage),
+     CorePage(PageType.launches),
+     CorePage(PageType.about),
   ];
 
   _changeTab(int index) {
@@ -30,8 +30,9 @@ class MainNavigationState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: pages[_selectedTab],
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('SpaceX'),),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
         onTap: (index) => _changeTab(index),
