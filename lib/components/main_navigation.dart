@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import '../services/enums.dart';
 
 class MainNavigation extends StatefulWidget {
-
   const MainNavigation({Key? key}) : super(key: key);
 
   @override
@@ -16,12 +15,10 @@ class MainNavigation extends StatefulWidget {
 class MainNavigationState extends State {
   int _selectedTab = 0;
 
-  final List _pages = [
-    CorePage(PageType.ABOUT),  CorePage(PageType.ABOUT),  CorePage(PageType.ABOUT),
-
-
-
-
+  final List pages = [
+    const CorePage(PageType.homepage),
+    const CorePage(PageType.launches),
+    const CorePage(PageType.about),
   ];
 
   _changeTab(int index) {
@@ -33,7 +30,8 @@ class MainNavigationState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedTab], appBar: AppBar(),
+      body: pages[_selectedTab],
+      appBar: AppBar(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
         onTap: (index) => _changeTab(index),
@@ -41,11 +39,10 @@ class MainNavigationState extends State {
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Company"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Launches"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.grid_3x3_outlined), label: "Launches"),
+              icon: Icon(Icons.grid_3x3_outlined), label: "About"),
         ],
-
       ),
     );
   }
