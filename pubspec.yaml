@@ -25,6 +25,9 @@ flutter:
   assets:
     - assets/space.jpg
     - assets/spacex_bg.jpg
+    - assets/elon.jpg
+    - assets/spacex_building.jpeg
+    - assets/musk.jpeg
   fonts:
     - family: RobotoMono
       fonts:

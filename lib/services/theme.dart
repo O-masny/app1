@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:themed/themed.dart';
 
 class MyTheme {
-  static const color1 = ColorRef(Colors.white);
+  static const color1 = ColorRef(Colors.orange);
   static const color2 = ColorRef(Colors.blue);
   static const color3 = ColorRef(Colors.green);
+
 
   static const titleStyle = TextStyleRef(
     TextStyle(

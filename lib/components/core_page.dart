@@ -7,6 +7,7 @@ import 'package:spacex_api/models/company/company.dart';
 import 'package:spacex_api/models/starlink/starlink.dart';
 
 import '../services/enums.dart';
+import 'company_content.dart';
 import 'company_tag.dart';
 
 class CorePage extends StatefulWidget {
@@ -120,11 +121,23 @@ class CorePageState extends State<CorePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        const Text(
+                          'About SpaceX',
+                          style: MyTheme.titleStyle,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            snapshot.data?.summary ?? '',
+                            style: MyTheme.descriptionStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CompanyTag(
                               title: 'CEO',
-                              path: 'assets/space.jpg',
+                              path: 'assets/musk.jpeg',
                               description: snapshot.data?.ceo ?? ''),
                         ),
                         const Padding(
@@ -135,27 +148,7 @@ class CorePageState extends State<CorePage> {
                             thickness: 5,
                           ),
                         ),
-                        const Text(
-                          'About SpaceX',
-                          style: MyTheme.titleStyle,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            snapshot.data?.summary ?? '',
-                            style: MyTheme.descriptionStyle,
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CompanyTag(
-                                title: 'CEO',
-                                path: 'assets/spacex_building.jpeg',
-                                description:
-                                    snapshot.data?.headquarters.address ?? ''),
-                          ],
-                        )
+                        CompanyContent(snapshot.data!),
                       ],
                     ),
                   )

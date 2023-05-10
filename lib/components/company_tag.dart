@@ -26,15 +26,15 @@ class CompanyTag extends StatelessWidget {
           style: MyTheme.titleStyle,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
           child: Image(
-            height: width - 15,
+            width: width - 15,
             image: AssetImage(path),
           ),
         ),
         Text(
           description,
-          style: MyTheme.titleStyle,
+          style: MyTheme.descriptionStyle,
         ),
       ],
     );
