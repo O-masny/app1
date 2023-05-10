@@ -1,4 +1,5 @@
 
+import 'package:applifting/services/theme.dart';
 import 'package:flutter/cupertino.dart';
 
 class CompanyTag extends StatelessWidget {
@@ -22,7 +23,7 @@ class CompanyTag extends StatelessWidget {
       children: [
         Text(
           title,
-          style: style,
+          style: MyTheme.titleStyle,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
@@ -33,6 +34,7 @@ class CompanyTag extends StatelessWidget {
         ),
         Text(
           description,
+          style: MyTheme.titleStyle,
         ),
       ],
     );

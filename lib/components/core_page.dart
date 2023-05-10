@@ -1,10 +1,13 @@
 import 'package:applifting/components/cards_custom.dart';
 import 'package:applifting/services/api.dart';
+import 'package:applifting/services/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:spacex_api/models/company/company.dart';
+import 'package:spacex_api/models/starlink/starlink.dart';
 
 import '../services/enums.dart';
+import 'company_tag.dart';
 
 class CorePage extends StatefulWidget {
   final PageType type;
@@ -12,42 +15,54 @@ class CorePage extends StatefulWidget {
   CorePage(this.type, {Key? key}) : super(key: key);
 
   @override
-  State<CorePage> createState() => _CorePageState();
+  State<CorePage> createState() => CorePageState();
 }
 
-class _CorePageState extends State<CorePage> {
+class CorePageState extends State<CorePage> {
   final api = ApiSpacex();
   late var company;
 
+  late var launches;
+
   @override
   void initState() {
-    company = api.fetchCompany();
     super.initState();
+    if (widget.type == PageType.launches) {
+      launches = api.queryStarlinks();
+    }
+    if (widget.type == PageType.about) {
+      company = api.fetchCompany();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     getType(widget.type);
+
     return Stack(
       fit: StackFit.passthrough,
       children: [
         SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               widget.type == PageType.about
                   ? about_body()
-                  : Column(
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Text(
-                              title,
-                              style: const TextStyle(fontSize: 25),
-                            )),
-                        const FlightCard(SpaceFlights.upcomingFlights, ''),
-                        const FlightCard(SpaceFlights.previousFlights, ''),
-                      ],
-                    ),
+                  : widget.type == PageType.launches
+                      ? _getStarlinks()
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text(
+                                  title,
+                                  style: const TextStyle(fontSize: 25),
+                                )),
+                            const FlightCard(SpaceFlights.upcomingFlights, ''),
+                            const FlightCard(SpaceFlights.previousFlights, ''),
+                          ],
+                        ),
             ],
           ),
         ),
@@ -101,28 +116,81 @@ class _CorePageState extends State<CorePage> {
         future: company,
         builder: (BuildContext context, AsyncSnapshot<Company?> snapshot) =>
             snapshot.hasData
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CompanyTag(
-                            title: 'CEO',
-                            path: 'assets/space.jpg',
-                            description: snapshot.data?.ceo ?? ''),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CompanyTag(
-                            title: 'CEO',
-                            path: 'assets/space.jpg',
-                            description: snapshot.data?.ceo ?? ''),
-                      ),
-                    ],
+                ? Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CompanyTag(
+                              title: 'CEO',
+                              path: 'assets/space.jpg',
+                              description: snapshot.data?.ceo ?? ''),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 18.0),
+                          child: Divider(
+                            color: Colors.orange,
+                            height: 8,
+                            thickness: 5,
+                          ),
+                        ),
+                        const Text(
+                          'About SpaceX',
+                          style: MyTheme.titleStyle,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            snapshot.data?.summary ?? '',
+                            style: MyTheme.descriptionStyle,
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CompanyTag(
+                                title: 'CEO',
+                                path: 'assets/spacex_building.jpeg',
+                                description:
+                                    snapshot.data?.headquarters.address ?? ''),
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 : Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.orange,
+                    child: AnimatedContainer(
+                      duration: const Duration(seconds: 1),
+                      child: const CircularProgressIndicator(
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ),
+      );
+
+  Widget _getStarlinks() => FutureBuilder<List<Starlink?>>(
+        future: launches,
+        builder: (BuildContext context,
+                AsyncSnapshot<List<Starlink?>> snapshot) =>
+            snapshot.hasData
+                ? Center(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 20,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                              title: Text(snapshot.data![index]?.launch ?? ''),
+                              trailing:
+                                  Text(snapshot.data![index]?.version ?? ''),
+                              subtitle: Text(snapshot.data![index]?.id ?? ''));
+                        }))
+                : Center(
+                    child: AnimatedContainer(
+                      duration: const Duration(seconds: 1),
+                      child: const CircularProgressIndicator(
+                        color: Colors.orange,
+                      ),
                     ),
                   ),
       );

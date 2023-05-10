@@ -41,20 +41,22 @@ class ApiSpacex {
       err.toString();
     }
   }
+
   Future<Company?> fetchCompany() async {
     try {
       final response = await api.getCompany();
       if (response.statusCode == 200) {
-
         final json = Utils.parseResponseAsJson(response);
         final company = Company.fromJson(json);
+        print('SUCCESS COMPANY API CALL');
         return company;
       }
     } catch (err) {
       err.toString();
     }
   }
-  Future<void> _queryStarlinks() async {
+
+  Future<List<Starlink>?> queryStarlinks() async {
     final query = Options();
     query.limit = 25;
     query.page = 1;
@@ -76,11 +78,7 @@ class ApiSpacex {
           .cast<Starlink>()
           .toList();
       print("Qeury Starlinks ");
-      data.forEach((element) {
-        _fetchSingleCapsule(api);
-
-        print(element.id);
-      });
+      return data;
     }
 
     // Alternative solution

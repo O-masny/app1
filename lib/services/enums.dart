@@ -1,3 +1,3 @@
 enum SpaceFlights { upcomingFlights, previousFlights }
 
-enum PageType {launches, about, homepage}
+enum PageType {homepage, launches, about}
